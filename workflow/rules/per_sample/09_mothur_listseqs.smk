@@ -11,6 +11,7 @@ rule mothur_list_seqs:
     shell:
         """
         mkdir -p {params.outdir}
-        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);list.seqs(name={input.names})" \
+        {params.mothur} "#set.dir(output={params.outdir});list.seqs(name={input.names})" \
             >> {log} 2>&1
+        # list.seqs names output after names stem: {sample}.accnos — matches output directly
         """

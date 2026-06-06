@@ -13,6 +13,8 @@ rule mothur_unique_all:
     shell:
         """
         mkdir -p {params.outdir}
-        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);unique.seqs(fasta={input.fasta},name={input.names})" \
+        {params.mothur} "#set.dir(output={params.outdir});unique.seqs(fasta={input.fasta},name={input.names})" \
             >> {log} 2>&1
+        # unique.seqs creates All.unique.fasta + All.names (named from fasta stem, not All.unique.names)
+        mv {params.outdir}/All.names {output.names}
         """

@@ -14,6 +14,9 @@ rule mothur_make_contigs:
     shell:
         """
         mkdir -p {params.outdir}
-        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);make.contigs(ffastq={input.r1},rfastq={input.r2},processors={params.processors})" \
+        {params.mothur} "#set.dir(output={params.outdir});make.contigs(ffastq={input.r1},rfastq={input.r2},processors={params.processors})" \
             >> {log} 2>&1
+        # mothur names output from input stem (corrected_R1.*) — rename to sample name
+        mv {params.outdir}/corrected_R1.trim.contigs.fasta {output.fasta}
+        mv {params.outdir}/corrected_R1.contigs.qual {output.qual}
         """

@@ -13,6 +13,9 @@ rule mothur_unique_seqs_2:
     shell:
         """
         mkdir -p {params.outdir}
-        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);unique.seqs(fasta={input.fasta},name={input.names})" \
+        {params.mothur} "#set.dir(output={params.outdir});unique.seqs(fasta={input.fasta},name={input.names})" \
             >> {log} 2>&1
+        # unique.seqs names output after fasta stem: {sample}.filter.unique.fasta, {sample}.filter.names
+        mv {params.outdir}/{wildcards.sample}.filter.unique.fasta {output.fasta}
+        mv {params.outdir}/{wildcards.sample}.filter.names {output.names}
         """

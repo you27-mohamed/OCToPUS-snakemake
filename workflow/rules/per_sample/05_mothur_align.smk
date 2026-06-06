@@ -13,6 +13,8 @@ rule mothur_align_seqs:
     shell:
         """
         mkdir -p {params.outdir}
-        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);align.seqs(fasta={input.fasta},reference={params.reference},flip=T,processors={params.processors})" \
+        {params.mothur} "#set.dir(output={params.outdir});align.seqs(fasta={input.fasta},reference={params.reference},flip=T,processors={params.processors})" \
             >> {log} 2>&1
+        # align.seqs names output after input stem: {sample}.unique.align
+        mv {params.outdir}/{wildcards.sample}.unique.align {output.align}
         """
