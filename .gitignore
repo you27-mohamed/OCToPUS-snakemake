@@ -1,0 +1,18 @@
+# Runtime outputs
+results/
+.snakemake/
+
+# User-specific config (contains local paths)
+config/config.yaml
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Editor
+.DS_Store
+*.swp

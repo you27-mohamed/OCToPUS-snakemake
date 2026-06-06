@@ -1,0 +1,65 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+description: "OCToPUS Snakemake pipeline configuration schema"
+type: object
+required:
+  - run_id
+  - samples
+  - reference
+  - usearch
+  - processors
+  - mothur
+  - uparse
+properties:
+  run_id:
+    type: string
+    description: "Output run identifier (used as subfolder name under results/)"
+  samples:
+    type: string
+    description: "Path to samples TSV file"
+  reference:
+    type: string
+    description: "Full path to SILVA reference FASTA (mothur-compatible)"
+  usearch:
+    type: string
+    description: "Full path to USEARCH 8.1.1861 executable"
+  processors:
+    type: integer
+    minimum: 1
+    description: "Number of CPU cores per tool invocation"
+  mothur:
+    type: object
+    required: [maxambig, maxhomop, minlength, align_criteria]
+    properties:
+      maxambig:
+        type: integer
+        minimum: 0
+        description: "Maximum ambiguous bases allowed (trim.seqs)"
+      maxhomop:
+        type: integer
+        minimum: 1
+        description: "Maximum homopolymer length allowed (trim.seqs)"
+      minlength:
+        type: integer
+        minimum: 1
+        description: "Minimum sequence length (trim.seqs)"
+      align_criteria:
+        type: integer
+        minimum: 1
+        maximum: 100
+        description: "Percentile cutoff for alignment start/end/length screening (screen.seqs)"
+    additionalProperties: false
+  uparse:
+    type: object
+    required: [min_size, identity]
+    properties:
+      min_size:
+        type: integer
+        minimum: 1
+        description: "Minimum cluster size — singletons below this are discarded (sortbysize)"
+      identity:
+        type: number
+        minimum: 0
+        maximum: 1
+        description: "OTU clustering identity threshold (cluster_otus, usearch_global)"
+    additionalProperties: false
+additionalProperties: false

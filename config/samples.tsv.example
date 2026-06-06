@@ -1,0 +1,4 @@
+# Sample ID	Forward reads (R1, full path)	Reverse reads (R2, full path)
+# Lines starting with # are ignored. Use FULL absolute paths — not relative.
+Sample1	/full/path/to/Sample1_L001_R1_001.fastq	/full/path/to/Sample1_L001_R2_001.fastq
+Sample2	/full/path/to/Sample2_L001_R1_001.fastq	/full/path/to/Sample2_L001_R2_001.fastq
