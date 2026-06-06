@@ -1,0 +1,7 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - perl=5.26
+  - perl-file-basename
+  - perl-getopt-std
