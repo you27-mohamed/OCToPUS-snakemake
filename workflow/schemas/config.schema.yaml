@@ -44,7 +44,7 @@ properties:
         description: "Minimum sequence length (trim.seqs)"
       align_criteria:
         type: integer
-        minimum: 1
+        minimum: 0
         maximum: 100
         description: "Percentile cutoff for alignment start/end/length screening (screen.seqs)"
     additionalProperties: false

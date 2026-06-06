@@ -4,6 +4,7 @@ results/
 
 # User-specific config (contains local paths)
 config/config.yaml
+config/samples.tsv
 
 # Logs
 *.log

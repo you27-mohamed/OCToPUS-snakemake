@@ -4,10 +4,15 @@ import pandas as pd
 from pathlib import Path
 
 # Load samples table
-samples_df = pd.read_csv(
-    config["samples"], sep="\t", header=None,
-    names=["sample", "r1", "r2"], comment="#"
-)
+try:
+    samples_df = pd.read_csv(
+        config["samples"], sep="\t", header=None,
+        names=["sample", "r1", "r2"], comment="#"
+    )
+except FileNotFoundError:
+    raise SystemExit(f"[OCToPUS] Samples file not found: {config['samples']}\n  → Check 'samples:' in config/config.yaml")
+except Exception as e:
+    raise SystemExit(f"[OCToPUS] Failed to parse samples file {config['samples']}: {e}")
 SAMPLES = samples_df["sample"].tolist()
 RUN = config["run_id"]
 
