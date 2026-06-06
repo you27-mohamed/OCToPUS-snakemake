@@ -5,14 +5,12 @@ rule mothur_list_seqs:
         accnos = temp("results/{run}/per_sample/{sample}/09_mothur_listseqs/{sample}.accnos")
     log:
         "results/{run}/logs/per_sample/{sample}/09_mothur_listseqs.log"
-    conda:
-        "../../envs/mothur.yaml"
     params:
-        outdir = "results/{run}/per_sample/{sample}/09_mothur_listseqs"
+        outdir = "results/{run}/per_sample/{sample}/09_mothur_listseqs",
+        mothur = MOTHUR_BIN
     shell:
         """
-        mothur "#set.dir(output={params.outdir});
-                set.logfile(name={log},append=T);
-                list.seqs(name={input.names})" \
+        mkdir -p {params.outdir}
+        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);list.seqs(name={input.names})" \
             >> {log} 2>&1
         """

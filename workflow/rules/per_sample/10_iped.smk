@@ -1,5 +1,3 @@
-IPED_SCRIPT = "workflow/scripts/external/iped/IPED_main.pl"
-
 rule iped_denoise:
     input:
         fasta  = "results/{run}/per_sample/{sample}/08_mothur_derep2/{sample}.unique.fasta",
@@ -18,25 +16,55 @@ rule iped_denoise:
     params:
         outdir     = "results/{run}/per_sample/{sample}/10_iped",
         processors = config["processors"],
-        iped       = IPED_SCRIPT
+        iped_dir   = "workflow/scripts/external/iped",
+        catch_dir  = "workflow/scripts/external/catch",
+        bin_dir    = "workflow/scripts/external/bin"
     shell:
         """
-        # Run IPED denoising
-        perl {params.iped} \
-            _n {input.names} \
-            _f {input.fasta} \
-            _c {input.contig} \
-            _q {input.qual} \
+        set -euo pipefail
+        WORKDIR=$(pwd)
+
+        # Absolute paths for all inputs/outputs (IPED runs from a temp CWD)
+        FASTA="$WORKDIR/{input.fasta}"
+        NAMES="$WORKDIR/{input.names}"
+        CONTIG="$WORKDIR/{input.contig}"
+        QUAL="$WORKDIR/{input.qual}"
+        ACCNOS="$WORKDIR/{input.accnos}"
+        OUTDIR="$WORKDIR/{params.outdir}"
+        LOGFILE="$WORKDIR/{log}"
+        OUT_FASTA="$WORKDIR/{output.fasta}"
+        OUT_NAMES="$WORKDIR/{output.names}"
+        OUT_GROUPS="$WORKDIR/{output.groups}"
+
+        mkdir -p "$OUTDIR"
+        mkdir -p "$(dirname "$LOGFILE")"
+
+        # Per-invocation temp dir — avoids Temp/ and temp_split/ collisions across parallel samples
+        TMPRUN=$(mktemp -d)
+        trap "rm -rf $TMPRUN" EXIT
+
+        ln -s "$WORKDIR/{params.iped_dir}/IPED_main.pl" "$TMPRUN/IPED_main.pl"
+        ln -s "$WORKDIR/{params.iped_dir}/IPED.pl"      "$TMPRUN/IPED.pl"
+        ln -s "$WORKDIR/{params.iped_dir}/IPED.model"   "$TMPRUN/IPED.model"
+        ln -s "$WORKDIR/{params.bin_dir}/mothur"        "$TMPRUN/mothur"
+        ln -s "$WORKDIR/{params.catch_dir}/weka.jar"    "$TMPRUN/weka.jar"
+
+        cd "$TMPRUN"
+        # _o must end with '/' — IPED concatenates opts{o}.'IPED_Final/' without separator
+        perl IPED_main.pl \
+            _n "$NAMES" \
+            _f "$FASTA" \
+            _c "$CONTIG" \
+            _q "$QUAL" \
             _p {params.processors} \
-            _o {params.outdir} \
+            _o "$OUTDIR/" \
             _i {wildcards.sample} \
-            >> {log} 2>&1
+            >> "$LOGFILE" 2>&1
 
-        # Create groups file: prepend sample label to each accession
-        perl -pe 's/^([\w\W]+)\n/$1\t{wildcards.sample}\n/g' \
-            {input.accnos} > {output.groups} 2>> {log}
+        # Move IPED outputs to Snakemake-tracked paths
+        mv "$OUTDIR/IPED_Final/{wildcards.sample}/Results.IPED.fasta" "$OUT_FASTA"
+        mv "$OUTDIR/IPED_Final/{wildcards.sample}/Results.IPED.names" "$OUT_NAMES"
 
-        # Move IPED outputs to standard names
-        mv {params.outdir}/IPED_Final/{wildcards.sample}/Results.IPED.fasta {output.fasta}
-        mv {params.outdir}/IPED_Final/{wildcards.sample}/Results.IPED.names {output.names}
+        # Build groups file: each accession gets the sample label as group
+        perl -pe 's/^(\\S+).*/$1\\t{wildcards.sample}\\n/g' "$ACCNOS" > "$OUT_GROUPS" 2>> "$LOGFILE"
         """

@@ -11,18 +11,14 @@ rule mothur_remove_chimeras:
         accnos = temp(f"results/{RUN}/cross_sample/17_mothur_remove/chimeric.accnos")
     log:
         f"results/{RUN}/logs/cross_sample/17_mothur_remove.log"
-    conda:
-        "../../envs/mothur.yaml"
     params:
-        outdir = f"results/{RUN}/cross_sample/17_mothur_remove"
+        outdir = f"results/{RUN}/cross_sample/17_mothur_remove",
+        mothur = MOTHUR_BIN
     shell:
         """
-        # Extract chimeric sequence IDs from CATCh result
+        mkdir -p {params.outdir}
         echo "CATCh_Chimera_Check" > {output.accnos}
         grep -P "\tChimeric" {input.catch} | cut -f1 >> {output.accnos} 2>> {log}
-
-        mothur "#set.dir(output={params.outdir});
-                set.logfile(name={log},append=T);
-                remove.seqs(fasta={input.fasta},name={input.names},group={input.group},accnos={output.accnos})" \
+        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);remove.seqs(fasta={input.fasta},name={input.names},group={input.group},accnos={output.accnos})" \
             >> {log} 2>&1
         """

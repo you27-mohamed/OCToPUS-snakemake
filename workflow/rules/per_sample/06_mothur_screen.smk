@@ -7,15 +7,13 @@ rule mothur_screen_seqs:
         names = temp("results/{run}/per_sample/{sample}/06_mothur_screen/{sample}.good.names")
     log:
         "results/{run}/logs/per_sample/{sample}/06_mothur_screen.log"
-    conda:
-        "../../envs/mothur.yaml"
     params:
         outdir   = "results/{run}/per_sample/{sample}/06_mothur_screen",
-        criteria = config["mothur"]["align_criteria"]
+        criteria = config["mothur"]["align_criteria"],
+        mothur   = MOTHUR_BIN
     shell:
         """
-        mothur "#set.dir(output={params.outdir});
-                set.logfile(name={log},append=T);
-                screen.seqs(fasta={input.align},name={input.names},optimize=start-end-length,criteria={params.criteria})" \
+        mkdir -p {params.outdir}
+        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);screen.seqs(fasta={input.align},name={input.names},optimize=start-end-length,criteria={params.criteria})" \
             >> {log} 2>&1
         """

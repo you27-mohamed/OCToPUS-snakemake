@@ -10,14 +10,12 @@ rule mothur_split_groups:
         ))
     log:
         f"results/{RUN}/logs/cross_sample/18_mothur_split.log"
-    conda:
-        "../../envs/mothur.yaml"
     params:
-        outdir = f"results/{RUN}/cross_sample/18_mothur_split"
+        outdir = f"results/{RUN}/cross_sample/18_mothur_split",
+        mothur = MOTHUR_BIN
     shell:
         """
-        mothur "#set.dir(output={params.outdir});
-                set.logfile(name={log},append=T);
-                split.groups(fasta={input.fasta},name={input.names},group={input.group})" \
+        mkdir -p {params.outdir}
+        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);split.groups(fasta={input.fasta},name={input.names},group={input.group})" \
             >> {log} 2>&1
         """

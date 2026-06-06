@@ -7,15 +7,13 @@ rule chimera_slayer:
         chimeras = f"results/{RUN}/cross_sample/14_chimera_slayer/All.unique.slayer.chimeras"
     log:
         f"results/{RUN}/logs/cross_sample/14_chimera_slayer.log"
-    conda:
-        "../../envs/mothur.yaml"
     params:
         outdir     = f"results/{RUN}/cross_sample/14_chimera_slayer",
-        processors = config["processors"]
+        processors = config["processors"],
+        mothur     = MOTHUR_BIN
     shell:
         """
-        mothur "#set.dir(output={params.outdir});
-                set.logfile(name={log},append=T);
-                chimera.slayer(fasta={input.fasta},name={input.names},group={input.group},processors={params.processors})" \
+        mkdir -p {params.outdir}
+        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);chimera.slayer(fasta={input.fasta},name={input.names},group={input.group},processors={params.processors})" \
             >> {log} 2>&1
         """

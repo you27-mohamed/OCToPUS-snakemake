@@ -6,14 +6,12 @@ rule mothur_unique_seqs_1:
         names = temp("results/{run}/per_sample/{sample}/04_mothur_derep1/{sample}.names")
     log:
         "results/{run}/logs/per_sample/{sample}/04_mothur_derep1.log"
-    conda:
-        "../../envs/mothur.yaml"
     params:
-        outdir = "results/{run}/per_sample/{sample}/04_mothur_derep1"
+        outdir = "results/{run}/per_sample/{sample}/04_mothur_derep1",
+        mothur = MOTHUR_BIN
     shell:
         """
-        mothur "#set.dir(output={params.outdir});
-                set.logfile(name={log},append=T);
-                unique.seqs(fasta={input.fasta})" \
+        mkdir -p {params.outdir}
+        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);unique.seqs(fasta={input.fasta})" \
             >> {log} 2>&1
         """

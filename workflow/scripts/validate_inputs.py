@@ -32,7 +32,7 @@ def check_cmd(cmd, args=("--version",)):
 
 def run(config_path, samples_path):
     errors = []
-    total_checks = 12
+    total_checks = 13
 
     # --- config.yaml checks (1-3) ---
     config = None
@@ -155,7 +155,32 @@ def run(config_path, samples_path):
     if not ok:
         errors.append(("Perl not found in PATH (required for IPED, CATCh, mothur2uparse)", "Install: conda install -c conda-forge perl"))
 
-    # --- Writable directory check (12) ---
+    # --- Bundled binary checks (12) ---
+    bundled = [
+        ("workflow/scripts/external/bin/mothur",       True,  "Modified mothur 1.33.3 binary"),
+        ("workflow/scripts/external/bin/uchime",       True,  "uchime binary"),
+        ("workflow/scripts/external/iped/IPED_main.pl", False, "IPED_main.pl script"),
+        ("workflow/scripts/external/iped/IPED.pl",     False, "IPED.pl script"),
+        ("workflow/scripts/external/iped/IPED.model",  False, "IPED.model ML model"),
+        ("workflow/scripts/external/catch/CATCh.pl",   False, "CATCh.pl script"),
+        ("workflow/scripts/external/catch/weka.jar",   False, "weka.jar (IPED mode)"),
+        ("workflow/scripts/external/catch/weka_.jar",  False, "weka_.jar (CATCh denovo mode)"),
+        ("workflow/scripts/external/catch/denovo.model", False, "denovo.model (CATCh)"),
+    ]
+    for rel_path, must_exec, label in bundled:
+        p = Path(rel_path)
+        if not p.exists():
+            errors.append((
+                f"Bundled tool missing: {rel_path} ({label})",
+                "Re-clone or reinstall the OCToPUS repository"
+            ))
+        elif must_exec and not os.access(rel_path, os.X_OK):
+            errors.append((
+                f"Bundled binary not executable: {rel_path}",
+                f"Run: chmod +x {rel_path}"
+            ))
+
+    # --- Writable directory check (13) ---
     cwd = Path(".")
     if not os.access(cwd, os.W_OK):
         errors.append((

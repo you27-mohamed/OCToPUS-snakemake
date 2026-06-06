@@ -7,14 +7,12 @@ rule mothur_unique_all:
         names = temp(f"results/{RUN}/cross_sample/12_mothur_unique_all/All.unique.names")
     log:
         f"results/{RUN}/logs/cross_sample/12_mothur_unique_all.log"
-    conda:
-        "../../envs/mothur.yaml"
     params:
-        outdir = f"results/{RUN}/cross_sample/12_mothur_unique_all"
+        outdir = f"results/{RUN}/cross_sample/12_mothur_unique_all",
+        mothur = MOTHUR_BIN
     shell:
         """
-        mothur "#set.dir(output={params.outdir});
-                set.logfile(name={log},append=T);
-                unique.seqs(fasta={input.fasta},name={input.names})" \
+        mkdir -p {params.outdir}
+        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);unique.seqs(fasta={input.fasta},name={input.names})" \
             >> {log} 2>&1
         """

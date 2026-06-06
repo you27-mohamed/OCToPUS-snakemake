@@ -7,15 +7,13 @@ rule mothur_make_contigs:
         qual  = temp("results/{run}/per_sample/{sample}/02_mothur_assemble/{sample}.contigs.qual")
     log:
         "results/{run}/logs/per_sample/{sample}/02_mothur_assemble.log"
-    conda:
-        "../../envs/mothur.yaml"
     params:
         outdir     = "results/{run}/per_sample/{sample}/02_mothur_assemble",
-        processors = config["processors"]
+        processors = config["processors"],
+        mothur     = MOTHUR_BIN
     shell:
         """
-        mothur "#set.dir(output={params.outdir});
-                set.logfile(name={log},append=T);
-                make.contigs(ffastq={input.r1},rfastq={input.r2},processors={params.processors})" \
+        mkdir -p {params.outdir}
+        {params.mothur} "#set.dir(output={params.outdir});set.logfile(name={log},append=T);make.contigs(ffastq={input.r1},rfastq={input.r2},processors={params.processors})" \
             >> {log} 2>&1
         """

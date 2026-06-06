@@ -16,6 +16,9 @@ except Exception as e:
 SAMPLES = samples_df["sample"].tolist()
 RUN = config["run_id"]
 
+TOOLS_DIR = "workflow/scripts/external"
+MOTHUR_BIN = f"{TOOLS_DIR}/bin/mothur"
+
 # Per-sample rules
 include: "workflow/rules/per_sample/01_spades.smk"
 include: "workflow/rules/per_sample/02_mothur_assemble.smk"
