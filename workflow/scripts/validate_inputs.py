@@ -8,6 +8,7 @@ Exits 1 if any check fails, 0 if all pass.
 """
 import sys
 import os
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -16,12 +17,29 @@ import jsonschema
 
 SCHEMA_PATH = Path("workflow/schemas/config.schema.yaml")
 
+# Bin dir of the Python running this script — same conda env as Snakemake
+_ENV_BIN = Path(sys.executable).parent
+
+
+def _resolve_cmd(cmd):
+    """Find cmd in PATH or in the current conda env's bin dir."""
+    found = shutil.which(cmd)
+    if found:
+        return found
+    candidate = _ENV_BIN / cmd
+    if candidate.is_file() and os.access(candidate, os.X_OK):
+        return str(candidate)
+    return None
+
 
 def check_cmd(cmd, args=("--version",)):
     """Return (ok, output_str). ok=True if exit code 0."""
+    resolved = _resolve_cmd(cmd)
+    if resolved is None:
+        return False, ""
     try:
         result = subprocess.run(
-            [cmd, *args], capture_output=True, text=True, timeout=10
+            [resolved, *args], capture_output=True, text=True, timeout=10
         )
         return result.returncode == 0, (result.stdout + result.stderr).strip()
     except FileNotFoundError:
@@ -148,7 +166,10 @@ def run(config_path, samples_path):
     # --- Java check (10) ---
     ok, _ = check_cmd("java", ["-version"])
     if not ok:
-        errors.append(("Java not found in PATH (required for WEKA/CATCh)", "Install: conda install -c conda-forge openjdk=8"))
+        errors.append((
+            f"Java not found in PATH or conda env ({_ENV_BIN}) — required for WEKA/CATCh",
+            "Install: conda install -c conda-forge openjdk=8  (activate the octopus env first)"
+        ))
 
     # --- Perl check (11) ---
     ok, _ = check_cmd("perl", ["--version"])
