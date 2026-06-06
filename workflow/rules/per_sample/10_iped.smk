@@ -50,7 +50,7 @@ rule iped_denoise:
         ln -s "$WORKDIR/{params.catch_dir}/weka.jar"    "$TMPRUN/weka.jar"
 
         cd "$TMPRUN"
-        # _o must end with '/' — IPED concatenates opts{o}.'IPED_Final/' without separator
+        # _o must end with '/' — IPED concatenates opts{{o}}.'IPED_Final/' without separator
         perl IPED_main.pl \
             _n "$NAMES" \
             _f "$FASTA" \
