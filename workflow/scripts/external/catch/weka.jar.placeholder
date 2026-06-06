@@ -1,6 +1,0 @@
-PLACEHOLDER — weka.jar not installed.
-
-Extract weka.jar from the OCToPUS distribution package and place it at:
-  workflow/scripts/external/catch/weka.jar
-
-See workflow/scripts/external/catch/README.md for full instructions.
