@@ -1,7 +1,6 @@
 channels:
   - bioconda
   - conda-forge
-  - defaults
 dependencies:
   - spades=3.5.0
-  - python=3.6
+  - python=2.7

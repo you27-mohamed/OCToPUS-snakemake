@@ -1,5 +1,5 @@
 channels:
   - conda-forge
-  - defaults
+  - bioconda
 dependencies:
   - openjdk=8

@@ -1,6 +1,5 @@
 channels:
   - bioconda
   - conda-forge
-  - defaults
 dependencies:
   - mothur=1.33.3

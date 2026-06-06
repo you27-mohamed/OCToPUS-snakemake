@@ -7,6 +7,10 @@ rule mothur_split_groups:
         fastas = temp(expand(
             f"results/{RUN}/cross_sample/18_mothur_split/All.pick.{{sample}}.fasta",
             sample=SAMPLES
+        )),
+        names = temp(expand(
+            f"results/{RUN}/cross_sample/18_mothur_split/All.pick.{{sample}}.names",
+            sample=SAMPLES
         ))
     log:
         f"results/{RUN}/logs/cross_sample/18_mothur_split.log"
