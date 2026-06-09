@@ -13,6 +13,6 @@ rule mothur_filter_seqs:
         mkdir -p {params.outdir}
         {params.mothur} "#set.dir(output={params.outdir});filter.seqs(fasta={input.align},vertical=T)" \
             >> {log} 2>&1
-        # filter.seqs names output: {sample}.good.filter.fasta
+        # filter.seqs names output: {{sample}}.good.filter.fasta
         mv {params.outdir}/{wildcards.sample}.good.filter.fasta {output.fasta}
         """

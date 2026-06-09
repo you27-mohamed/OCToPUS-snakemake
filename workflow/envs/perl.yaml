@@ -3,3 +3,4 @@ channels:
   - bioconda
 dependencies:
   - perl=5.26
+  - openjdk=8

@@ -1,0 +1,11 @@
+name: octopus
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - openjdk=8
+  - jsonschema
+  - snakemake
+  - pyyaml
+  - python=3.11
+  - pandas

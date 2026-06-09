@@ -8,6 +8,13 @@ config/samples.tsv
 
 # Logs
 *.log
+*.logfile
+
+# Data (large files — transfer manually)
+data/
+
+# Original OCToPUS source (separate repo)
+OCToPUS/
 
 # Python
 __pycache__/
@@ -17,3 +24,7 @@ __pycache__/
 # Editor
 .DS_Store
 *.swp
+
+# Run logs
+nohup.out
+study1_run.log

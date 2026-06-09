@@ -14,7 +14,7 @@ rule mothur_unique_seqs_1:
         mkdir -p {params.outdir}
         {params.mothur} "#set.dir(output={params.outdir});unique.seqs(fasta={input.fasta})" \
             >> {log} 2>&1
-        # unique.seqs names output after input stem: {sample}.trim.unique.fasta, {sample}.trim.names
+        # unique.seqs names output after input stem: {{sample}}.trim.unique.fasta, {{sample}}.trim.names
         mv {params.outdir}/{wildcards.sample}.trim.unique.fasta {output.fasta}
         mv {params.outdir}/{wildcards.sample}.trim.names {output.names}
         """

@@ -1,5 +1,6 @@
 configfile: "config/config.yaml"
 
+import sys
 import pandas as pd
 from pathlib import Path
 
@@ -48,7 +49,7 @@ include: "workflow/rules/cross_sample/23_uparse_map.smk"
 
 
 onstart:
-    shell("python workflow/scripts/validate_inputs.py config/config.yaml config/samples.tsv")
+    shell(f"{sys.executable} workflow/scripts/validate_inputs.py config/config.yaml config/samples.tsv")
 
 
 rule all:

@@ -187,6 +187,9 @@ def run(config_path, samples_path):
         ("workflow/scripts/external/catch/weka.jar",   False, "weka.jar (IPED mode)"),
         ("workflow/scripts/external/catch/weka_.jar",  False, "weka_.jar (CATCh denovo mode)"),
         ("workflow/scripts/external/catch/denovo.model", False, "denovo.model (CATCh)"),
+        ("workflow/scripts/external/bin/blast/bin/formatdb",  True, "legacy BLAST formatdb (chimera.slayer)"),
+        ("workflow/scripts/external/bin/blast/bin/blastall",  True, "legacy BLAST blastall (chimera.slayer)"),
+        ("workflow/scripts/external/bin/blast/bin/megablast", True, "legacy BLAST megablast (chimera.slayer)"),
     ]
     for rel_path, must_exec, label in bundled:
         p = Path(rel_path)

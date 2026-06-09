@@ -9,15 +9,15 @@ rule spades_correct:
         "results/{run}/logs/per_sample/{sample}/01_spades.log"
     conda:
         "../../envs/spades.yaml"
+    threads: config["processors"]
     params:
-        outdir = "results/{run}/per_sample/{sample}/01_spades",
-        processors = config["processors"]
+        outdir = "results/{run}/per_sample/{sample}/01_spades"
     shell:
         """
         spades.py --only-error-correction \
             -1 {input.r1} -2 {input.r2} \
             -o {params.outdir} \
-            -t {params.processors} \
+            -t {threads} \
             >> {log} 2>&1
 
         # Decompress corrected reads

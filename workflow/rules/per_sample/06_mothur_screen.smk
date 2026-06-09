@@ -16,5 +16,5 @@ rule mothur_screen_seqs:
         mkdir -p {params.outdir}
         {params.mothur} "#set.dir(output={params.outdir});screen.seqs(fasta={input.align},name={input.names},optimize=start-end-length,criteria={params.criteria})" \
             >> {log} 2>&1
-        # screen.seqs inserts .good. before extension: {sample}.good.align, {sample}.good.names — matches output directly
+        # screen.seqs inserts .good. before extension: {{sample}}.good.align, {{sample}}.good.names — matches output directly
         """

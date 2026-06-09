@@ -10,6 +10,7 @@ rule uparse_global_map:
         uc       = temp(f"results/{RUN}/cross_sample/23_uparse_map/All.uparse.mapping.uc")
     log:
         f"results/{RUN}/logs/cross_sample/23_uparse_map.log"
+    threads: config["processors"]
     params:
         usearch  = config["usearch"],
         identity = config["uparse"]["identity"],
@@ -22,6 +23,7 @@ rule uparse_global_map:
             -db {input.otus} \
             -strand plus \
             -id {params.identity} \
+            -threads {threads} \
             -mothur_shared_out {output.shared} \
             -otutabout {output.otutab} \
             -biomout {output.biom} \

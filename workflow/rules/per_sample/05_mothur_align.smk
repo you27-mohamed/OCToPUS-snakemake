@@ -5,16 +5,19 @@ rule mothur_align_seqs:
         align = temp("results/{run}/per_sample/{sample}/05_mothur_align/{sample}.align")
     log:
         "results/{run}/logs/per_sample/{sample}/05_mothur_align.log"
+    conda:
+        "../../envs/mothur_threaded.yaml"
+    threads: 14
+    resources:
+        mem_mb = 14000
     params:
-        outdir     = "results/{run}/per_sample/{sample}/05_mothur_align",
-        reference  = config["reference"],
-        processors = config["processors"],
-        mothur     = MOTHUR_BIN
+        outdir    = "results/{run}/per_sample/{sample}/05_mothur_align",
+        reference = config["reference"]
     shell:
         """
         mkdir -p {params.outdir}
-        {params.mothur} "#set.dir(output={params.outdir});align.seqs(fasta={input.fasta},reference={params.reference},flip=T,processors={params.processors})" \
+        mothur "#set.dir(output={params.outdir});align.seqs(fasta={input.fasta},reference={params.reference},flip=T,processors={threads})" \
             >> {log} 2>&1
-        # align.seqs names output after input stem: {sample}.unique.align
+        # align.seqs names output after input stem: {{sample}}.unique.align
         mv {params.outdir}/{wildcards.sample}.unique.align {output.align}
         """
