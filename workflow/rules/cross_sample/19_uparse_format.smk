@@ -2,16 +2,16 @@ MOTHUR2UPARSE = "workflow/scripts/external/catch/mothur2uparse.pl"
 
 rule uparse_format:
     input:
-        fasta = f"results/{RUN}/cross_sample/18_mothur_split/All.pick.{{sample}}.fasta",
-        names = f"results/{RUN}/cross_sample/18_mothur_split/All.pick.{{sample}}.names"
+        fasta = f"{OUT}/cross_sample/18_mothur_split/All.pick.{{sample}}.fasta",
+        names = f"{OUT}/cross_sample/18_mothur_split/All.pick.{{sample}}.names"
     output:
-        uparse = temp(f"results/{RUN}/cross_sample/19_uparse_format/{{sample}}.uparse.fasta")
+        uparse = temp(f"{OUT}/cross_sample/19_uparse_format/{{sample}}.uparse.fasta")
     log:
-        f"results/{RUN}/logs/cross_sample/19_uparse_format/{{sample}}.log"
+        f"{OUT}/logs/cross_sample/19_uparse_format/{{sample}}.log"
     conda:
         "../../envs/perl.yaml"
     params:
-        outdir = f"results/{RUN}/cross_sample/19_uparse_format",
+        outdir = f"{OUT}/cross_sample/19_uparse_format",
         mothur = MOTHUR_BIN,
         m2u    = MOTHUR2UPARSE
     shell:

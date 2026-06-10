@@ -1,15 +1,15 @@
 rule chimera_uchime:
     input:
-        fasta = f"results/{RUN}/cross_sample/12_mothur_unique_all/All.unique.fasta",
-        names = f"results/{RUN}/cross_sample/12_mothur_unique_all/All.unique.names",
-        group = f"results/{RUN}/cross_sample/11_merge/All.group"
+        fasta = f"{OUT}/cross_sample/12_mothur_unique_all/All.unique.fasta",
+        names = f"{OUT}/cross_sample/12_mothur_unique_all/All.unique.names",
+        group = f"{OUT}/cross_sample/11_merge/All.group"
     output:
-        chimeras = f"results/{RUN}/cross_sample/13_chimera_uchime/All.unique.uchime.chimeras"
+        chimeras = f"{OUT}/cross_sample/13_chimera_uchime/All.unique.uchime.chimeras"
     log:
-        f"results/{RUN}/logs/cross_sample/13_chimera_uchime.log"
+        f"{OUT}/logs/cross_sample/13_chimera_uchime.log"
     threads: 1
     params:
-        outdir = f"results/{RUN}/cross_sample/13_chimera_uchime",
+        outdir = f"{OUT}/cross_sample/13_chimera_uchime",
         mothur = MOTHUR_BIN
     shell:
         """

@@ -1,14 +1,14 @@
 rule mothur_unique_all:
     input:
-        fasta = f"results/{RUN}/cross_sample/11_merge/All.fasta",
-        names = f"results/{RUN}/cross_sample/11_merge/All.names"
+        fasta = f"{OUT}/cross_sample/11_merge/All.fasta",
+        names = f"{OUT}/cross_sample/11_merge/All.names"
     output:
-        fasta = temp(f"results/{RUN}/cross_sample/12_mothur_unique_all/All.unique.fasta"),
-        names = temp(f"results/{RUN}/cross_sample/12_mothur_unique_all/All.unique.names")
+        fasta = temp(f"{OUT}/cross_sample/12_mothur_unique_all/All.unique.fasta"),
+        names = temp(f"{OUT}/cross_sample/12_mothur_unique_all/All.unique.names")
     log:
-        f"results/{RUN}/logs/cross_sample/12_mothur_unique_all.log"
+        f"{OUT}/logs/cross_sample/12_mothur_unique_all.log"
     params:
-        outdir = f"results/{RUN}/cross_sample/12_mothur_unique_all",
+        outdir = f"{OUT}/cross_sample/12_mothur_unique_all",
         mothur = MOTHUR_BIN
     shell:
         """

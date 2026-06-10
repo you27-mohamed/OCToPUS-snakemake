@@ -1,17 +1,17 @@
 rule merge_samples:
     input:
-        fasta  = expand("results/{run}/per_sample/{sample}/10_iped/{sample}.IPED.fasta",
-                        run=RUN, sample=SAMPLES),
-        names  = expand("results/{run}/per_sample/{sample}/10_iped/{sample}.IPED.names",
-                        run=RUN, sample=SAMPLES),
-        groups = expand("results/{run}/per_sample/{sample}/10_iped/{sample}.IPED.groups",
-                        run=RUN, sample=SAMPLES)
+        fasta  = expand(f"{OUT}/per_sample/{{sample}}/10_iped/{{sample}}.IPED.fasta",
+                        sample=SAMPLES),
+        names  = expand(f"{OUT}/per_sample/{{sample}}/10_iped/{{sample}}.IPED.names",
+                        sample=SAMPLES),
+        groups = expand(f"{OUT}/per_sample/{{sample}}/10_iped/{{sample}}.IPED.groups",
+                        sample=SAMPLES)
     output:
-        fasta  = temp(f"results/{RUN}/cross_sample/11_merge/All.fasta"),
-        names  = temp(f"results/{RUN}/cross_sample/11_merge/All.names"),
-        group  = temp(f"results/{RUN}/cross_sample/11_merge/All.group")
+        fasta  = temp(f"{OUT}/cross_sample/11_merge/All.fasta"),
+        names  = temp(f"{OUT}/cross_sample/11_merge/All.names"),
+        group  = temp(f"{OUT}/cross_sample/11_merge/All.group")
     log:
-        f"results/{RUN}/logs/cross_sample/11_merge.log"
+        f"{OUT}/logs/cross_sample/11_merge.log"
     shell:
         """
         cat {input.fasta} > {output.fasta} 2>> {log}

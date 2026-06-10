@@ -1,18 +1,18 @@
 rule catch_ensemble:
     input:
-        fasta   = f"results/{RUN}/cross_sample/11_merge/All.fasta",
-        names   = f"results/{RUN}/cross_sample/11_merge/All.names",
-        uchime  = f"results/{RUN}/cross_sample/13_chimera_uchime/All.unique.uchime.chimeras",
-        slayer  = f"results/{RUN}/cross_sample/14_chimera_slayer/All.unique.slayer.chimeras",
-        perseus = f"results/{RUN}/cross_sample/15_chimera_perseus/All.unique.perseus.chimeras"
+        fasta   = f"{OUT}/cross_sample/11_merge/All.fasta",
+        names   = f"{OUT}/cross_sample/11_merge/All.names",
+        uchime  = f"{OUT}/cross_sample/13_chimera_uchime/All.unique.uchime.chimeras",
+        slayer  = f"{OUT}/cross_sample/14_chimera_slayer/All.unique.slayer.chimeras",
+        perseus = f"{OUT}/cross_sample/15_chimera_perseus/All.unique.perseus.chimeras"
     output:
-        result = f"results/{RUN}/cross_sample/16_catch/CATCH_Result.arff.Final_Result"
+        result = f"{OUT}/cross_sample/16_catch/CATCH_Result.arff.Final_Result"
     log:
-        f"results/{RUN}/logs/cross_sample/16_catch.log"
+        f"{OUT}/logs/cross_sample/16_catch.log"
     conda:
         "../../envs/perl.yaml"
     params:
-        outdir    = f"results/{RUN}/cross_sample/16_catch",
+        outdir    = f"{OUT}/cross_sample/16_catch",
         processors = config["processors"],
         catch_dir  = "workflow/scripts/external/catch"
     shell:

@@ -16,6 +16,7 @@ except Exception as e:
     raise SystemExit(f"[OCToPUS] Failed to parse samples file {config['samples']}: {e}")
 SAMPLES = samples_df["sample"].tolist()
 RUN = config["run_id"]
+OUT = f"{config.get('output_dir', 'results')}/{RUN}"
 
 TOOLS_DIR = "workflow/scripts/external"
 MOTHUR_BIN = f"{TOOLS_DIR}/bin/mothur"
@@ -54,7 +55,7 @@ onstart:
 
 rule all:
     input:
-        expand("results/{run}/final/OCTOPUS_OTUs.fasta", run=RUN),
-        expand("results/{run}/final/OCTOPUS.shared", run=RUN),
-        expand("results/{run}/final/OCTOPUS.biom", run=RUN),
-        expand("results/{run}/final/OCTOPUS_otutab_txt", run=RUN),
+        f"{OUT}/final/OCTOPUS_OTUs.fasta",
+        f"{OUT}/final/OCTOPUS.shared",
+        f"{OUT}/final/OCTOPUS.biom",
+        f"{OUT}/final/OCTOPUS_otutab_txt",

@@ -13,6 +13,9 @@ properties:
   run_id:
     type: string
     description: "Output run identifier (used as subfolder name under results/)"
+  output_dir:
+    type: string
+    description: "Base directory for all pipeline outputs (default: results)"
   samples:
     type: string
     description: "Path to samples TSV file"

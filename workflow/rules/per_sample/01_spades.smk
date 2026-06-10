@@ -3,15 +3,15 @@ rule spades_correct:
         r1 = lambda wc: samples_df.loc[samples_df["sample"] == wc.sample, "r1"].values[0],
         r2 = lambda wc: samples_df.loc[samples_df["sample"] == wc.sample, "r2"].values[0]
     output:
-        r1 = temp("results/{run}/per_sample/{sample}/01_spades/corrected_R1.fastq"),
-        r2 = temp("results/{run}/per_sample/{sample}/01_spades/corrected_R2.fastq")
+        r1 = temp(f"{OUT}/per_sample/{{sample}}/01_spades/corrected_R1.fastq"),
+        r2 = temp(f"{OUT}/per_sample/{{sample}}/01_spades/corrected_R2.fastq")
     log:
-        "results/{run}/logs/per_sample/{sample}/01_spades.log"
+        f"{OUT}/logs/per_sample/{{sample}}/01_spades.log"
     conda:
         "../../envs/spades.yaml"
     threads: config["processors"]
     params:
-        outdir = "results/{run}/per_sample/{sample}/01_spades"
+        outdir = f"{OUT}/per_sample/{{sample}}/01_spades"
     shell:
         """
         spades.py --only-error-correction \

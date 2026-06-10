@@ -1,15 +1,15 @@
 rule chimera_perseus_per_sample:
     input:
-        fasta = f"results/{RUN}/cross_sample/12_mothur_unique_all/All.unique.fasta",
-        names = f"results/{RUN}/cross_sample/12_mothur_unique_all/All.unique.names",
-        group = f"results/{RUN}/cross_sample/11_merge/All.group"
+        fasta = f"{OUT}/cross_sample/12_mothur_unique_all/All.unique.fasta",
+        names = f"{OUT}/cross_sample/12_mothur_unique_all/All.unique.names",
+        group = f"{OUT}/cross_sample/11_merge/All.group"
     output:
-        chimeras = temp(f"results/{RUN}/cross_sample/15_chimera_perseus/per_sample/{{sample}}.chimeras")
+        chimeras = temp(f"{OUT}/cross_sample/15_chimera_perseus/per_sample/{{sample}}.chimeras")
     log:
-        f"results/{RUN}/logs/cross_sample/15_chimera_perseus_{{sample}}.log"
+        f"{OUT}/logs/cross_sample/15_chimera_perseus_{{sample}}.log"
     threads: 1
     params:
-        sampledir = lambda wc: f"results/{RUN}/cross_sample/15_chimera_perseus/per_sample/{wc.sample}",
+        sampledir = lambda wc: f"{OUT}/cross_sample/15_chimera_perseus/per_sample/{wc.sample}",
         mothur    = MOTHUR_BIN
     shell:
         """
@@ -25,13 +25,13 @@ rule chimera_perseus_per_sample:
 rule chimera_perseus:
     input:
         per_sample = expand(
-            f"results/{RUN}/cross_sample/15_chimera_perseus/per_sample/{{sample}}.chimeras",
+            f"{OUT}/cross_sample/15_chimera_perseus/per_sample/{{sample}}.chimeras",
             sample=SAMPLES
         )
     output:
-        chimeras = f"results/{RUN}/cross_sample/15_chimera_perseus/All.unique.perseus.chimeras"
+        chimeras = f"{OUT}/cross_sample/15_chimera_perseus/All.unique.perseus.chimeras"
     log:
-        f"results/{RUN}/logs/cross_sample/15_chimera_perseus_merge.log"
+        f"{OUT}/logs/cross_sample/15_chimera_perseus_merge.log"
     params:
         first = lambda wc, input: input.per_sample[0]
     shell:

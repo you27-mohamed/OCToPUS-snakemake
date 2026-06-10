@@ -204,12 +204,16 @@ def run(config_path, samples_path):
                 f"Run: chmod +x {rel_path}"
             ))
 
-    # --- Writable directory check (13) ---
-    cwd = Path(".")
-    if not os.access(cwd, os.W_OK):
+    # --- Output directory writability check (13) ---
+    out_base = Path((config or {}).get("output_dir", "results"))
+    # Check the nearest existing ancestor is writable
+    check_dir = out_base
+    while not check_dir.exists():
+        check_dir = check_dir.parent
+    if not os.access(check_dir, os.W_OK):
         errors.append((
-            f"Current directory is not writable: {cwd.resolve()}",
-            "Check directory permissions — results/ will be written here"
+            f"Output directory is not writable: {out_base.resolve()}",
+            f"Check permissions on {check_dir.resolve()} — pipeline outputs go to {out_base}/<run_id>/"
         ))
 
     # --- Report ---

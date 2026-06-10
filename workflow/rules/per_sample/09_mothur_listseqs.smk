@@ -1,12 +1,12 @@
 rule mothur_list_seqs:
     input:
-        names = "results/{run}/per_sample/{sample}/08_mothur_derep2/{sample}.names"
+        names = f"{OUT}/per_sample/{{sample}}/08_mothur_derep2/{{sample}}.names"
     output:
-        accnos = temp("results/{run}/per_sample/{sample}/09_mothur_listseqs/{sample}.accnos")
+        accnos = temp(f"{OUT}/per_sample/{{sample}}/09_mothur_listseqs/{{sample}}.accnos")
     log:
-        "results/{run}/logs/per_sample/{sample}/09_mothur_listseqs.log"
+        f"{OUT}/logs/per_sample/{{sample}}/09_mothur_listseqs.log"
     params:
-        outdir = "results/{run}/per_sample/{sample}/09_mothur_listseqs",
+        outdir = f"{OUT}/per_sample/{{sample}}/09_mothur_listseqs",
         mothur = MOTHUR_BIN
     shell:
         """

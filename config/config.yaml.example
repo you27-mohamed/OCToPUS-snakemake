@@ -6,6 +6,11 @@
 # Set explicitly for reproducible naming; default: ISO timestamp.
 run_id: "my_run"
 
+# Base directory for all pipeline outputs (intermediates + final results)
+# Pipeline writes to {output_dir}/{run_id}/  — absolute or relative path OK
+# Default: "results" (creates results/<run_id>/ in the working directory)
+output_dir: "results"
+
 # Path to samples TSV file (tab-separated: SampleID  R1.fastq  R2.fastq)
 samples: "config/samples.tsv"
 

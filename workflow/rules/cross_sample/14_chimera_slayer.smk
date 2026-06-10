@@ -1,15 +1,15 @@
 rule chimera_slayer:
     input:
-        fasta = f"results/{RUN}/cross_sample/12_mothur_unique_all/All.unique.fasta",
-        names = f"results/{RUN}/cross_sample/12_mothur_unique_all/All.unique.names",
-        group = f"results/{RUN}/cross_sample/11_merge/All.group"
+        fasta = f"{OUT}/cross_sample/12_mothur_unique_all/All.unique.fasta",
+        names = f"{OUT}/cross_sample/12_mothur_unique_all/All.unique.names",
+        group = f"{OUT}/cross_sample/11_merge/All.group"
     output:
-        chimeras = f"results/{RUN}/cross_sample/14_chimera_slayer/All.unique.slayer.chimeras"
+        chimeras = f"{OUT}/cross_sample/14_chimera_slayer/All.unique.slayer.chimeras"
     log:
-        f"results/{RUN}/logs/cross_sample/14_chimera_slayer.log"
+        f"{OUT}/logs/cross_sample/14_chimera_slayer.log"
     threads: 1
     params:
-        outdir = f"results/{RUN}/cross_sample/14_chimera_slayer",
+        outdir = f"{OUT}/cross_sample/14_chimera_slayer",
         mothur = MOTHUR_BIN
     shell:
         """
