@@ -24,17 +24,17 @@ rule iped_denoise:
         set -euo pipefail
         WORKDIR=$(pwd)
 
-        # Absolute paths for all inputs/outputs (IPED runs from a temp CWD)
-        FASTA="$WORKDIR/{input.fasta}"
-        NAMES="$WORKDIR/{input.names}"
-        CONTIG="$WORKDIR/{input.contig}"
-        QUAL="$WORKDIR/{input.qual}"
-        ACCNOS="$WORKDIR/{input.accnos}"
-        OUTDIR="$WORKDIR/{params.outdir}"
-        LOGFILE="$WORKDIR/{log}"
-        OUT_FASTA="$WORKDIR/{output.fasta}"
-        OUT_NAMES="$WORKDIR/{output.names}"
-        OUT_GROUPS="$WORKDIR/{output.groups}"
+        # realpath -m resolves both relative and absolute paths correctly
+        FASTA=$(realpath -m "{input.fasta}")
+        NAMES=$(realpath -m "{input.names}")
+        CONTIG=$(realpath -m "{input.contig}")
+        QUAL=$(realpath -m "{input.qual}")
+        ACCNOS=$(realpath -m "{input.accnos}")
+        OUTDIR=$(realpath -m "{params.outdir}")
+        LOGFILE=$(realpath -m "{log}")
+        OUT_FASTA=$(realpath -m "{output.fasta}")
+        OUT_NAMES=$(realpath -m "{output.names}")
+        OUT_GROUPS=$(realpath -m "{output.groups}")
 
         mkdir -p "$OUTDIR"
         mkdir -p "$(dirname "$LOGFILE")"

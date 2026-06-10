@@ -20,15 +20,15 @@ rule catch_ensemble:
         set -euo pipefail
         WORKDIR=$(pwd)
 
-        # Absolute paths — CATCh uses getcwd() to locate weka_.jar and denovo.model
-        FASTA="$WORKDIR/{input.fasta}"
-        NAMES="$WORKDIR/{input.names}"
-        UCHIME="$WORKDIR/{input.uchime}"
-        SLAYER="$WORKDIR/{input.slayer}"
-        PERSEUS="$WORKDIR/{input.perseus}"
-        OUTDIR="$WORKDIR/{params.outdir}"
-        LOGFILE="$WORKDIR/{log}"
-        OUT_RESULT="$WORKDIR/{output.result}"
+        # realpath -m resolves both relative and absolute paths correctly
+        FASTA=$(realpath -m "{input.fasta}")
+        NAMES=$(realpath -m "{input.names}")
+        UCHIME=$(realpath -m "{input.uchime}")
+        SLAYER=$(realpath -m "{input.slayer}")
+        PERSEUS=$(realpath -m "{input.perseus}")
+        OUTDIR=$(realpath -m "{params.outdir}")
+        LOGFILE=$(realpath -m "{log}")
+        OUT_RESULT=$(realpath -m "{output.result}")
 
         mkdir -p "$OUTDIR"
         mkdir -p "$(dirname "$LOGFILE")"
